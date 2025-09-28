@@ -34,6 +34,8 @@ import java.util.logging.Level;
 
 public class InventoryManager {
 
+    private static InventoryManager instance;
+
     private final JavaPlugin plugin;
 
     private final Map<UUID, SmartInventory> inventories = new HashMap<>();
@@ -45,11 +47,17 @@ public class InventoryManager {
     );
     private final List<InventoryOpener> openers = new ArrayList<>();
 
+    public static InventoryManager get() {
+        return instance;
+    }
+
     public InventoryManager(JavaPlugin plugin, int updatePeriod) {
         this.plugin = plugin;
 
         Bukkit.getPluginManager().registerEvents(new InvListener(), plugin);
         new InvTask().runTaskTimer(plugin, 1, updatePeriod);
+
+        instance = this;
     }
 
     public Optional<InventoryOpener> findOpener(InventoryType type) {

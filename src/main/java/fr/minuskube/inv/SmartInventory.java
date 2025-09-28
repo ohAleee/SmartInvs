@@ -26,7 +26,7 @@ public class SmartInventory {
     private SmartInventory parent;
 
     private List<InventoryListener<? extends Event>> listeners;
-    private InventoryManager manager;
+    private final InventoryManager manager;
 
     private SmartInventory(InventoryManager manager) {
         this.manager = manager;
@@ -110,11 +110,11 @@ public class SmartInventory {
         private int rows = 6, columns = 9;
         private boolean closeable = true;
 
-        private InventoryManager manager;
+        private InventoryManager manager = InventoryManager.get();
         private InventoryProvider provider;
         private SmartInventory parent;
 
-        private List<InventoryListener<? extends Event>> listeners = new ArrayList<>();
+        private final List<InventoryListener<? extends Event>> listeners = new ArrayList<>();
 
         private Builder() {}
 
