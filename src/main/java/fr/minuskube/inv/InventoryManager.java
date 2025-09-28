@@ -166,7 +166,7 @@ public class InventoryManager {
                     return;
 
                 inv.getListeners().stream()
-                        .filter(listener -> listener.getType() == InventoryClickEvent.class)
+                        .filter(listener -> listener.type() == InventoryClickEvent.class)
                         .forEach(listener -> ((InventoryListener<InventoryClickEvent>) listener).accept(e));
 
                 contents.get(p.getUniqueId()).get(row, column).ifPresent(item -> item.run(e));
@@ -193,7 +193,7 @@ public class InventoryManager {
             }
 
             inv.getListeners().stream()
-                    .filter(listener -> listener.getType() == InventoryDragEvent.class)
+                    .filter(listener -> listener.type() == InventoryDragEvent.class)
                     .forEach(listener -> ((InventoryListener<InventoryDragEvent>) listener).accept(e));
         }
 
@@ -207,7 +207,7 @@ public class InventoryManager {
             SmartInventory inv = inventories.get(p.getUniqueId());
 
             inv.getListeners().stream()
-                    .filter(listener -> listener.getType() == InventoryOpenEvent.class)
+                    .filter(listener -> listener.type() == InventoryOpenEvent.class)
                     .forEach(listener -> ((InventoryListener<InventoryOpenEvent>) listener).accept(e));
         }
 
@@ -221,7 +221,7 @@ public class InventoryManager {
             SmartInventory inv = inventories.get(p.getUniqueId());
 
             inv.getListeners().stream()
-                    .filter(listener -> listener.getType() == InventoryCloseEvent.class)
+                    .filter(listener -> listener.type() == InventoryCloseEvent.class)
                     .forEach(listener -> ((InventoryListener<InventoryCloseEvent>) listener).accept(e));
 
             if (inv.isCloseable()) {
@@ -243,7 +243,7 @@ public class InventoryManager {
             SmartInventory inv = inventories.get(p.getUniqueId());
 
             inv.getListeners().stream()
-                    .filter(listener -> listener.getType() == PlayerQuitEvent.class)
+                    .filter(listener -> listener.type() == PlayerQuitEvent.class)
                     .forEach(listener -> ((InventoryListener<PlayerQuitEvent>) listener).accept(e));
 
             inventories.remove(p.getUniqueId());
@@ -254,7 +254,7 @@ public class InventoryManager {
         public void onPluginDisable(PluginDisableEvent e) {
             new HashMap<>(inventories).forEach((player, inv) -> {
                 inv.getListeners().stream()
-                        .filter(listener -> listener.getType() == PluginDisableEvent.class)
+                        .filter(listener -> listener.type() == PluginDisableEvent.class)
                         .forEach(listener -> ((InventoryListener<PluginDisableEvent>) listener).accept(e));
 
                 inv.close(Bukkit.getPlayer(player));

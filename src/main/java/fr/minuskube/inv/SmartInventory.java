@@ -38,7 +38,7 @@ public class SmartInventory {
 
         oldInv.ifPresent(inv -> {
             inv.getListeners().stream()
-                    .filter(listener -> listener.getType() == InventoryCloseEvent.class)
+                    .filter(listener -> listener.type() == InventoryCloseEvent.class)
                     .forEach(listener -> ((InventoryListener<InventoryCloseEvent>) listener)
                             .accept(new InventoryCloseEvent(player.getOpenInventory())));
 
@@ -74,7 +74,7 @@ public class SmartInventory {
     @SuppressWarnings("unchecked")
     public void close(Player player) {
         listeners.stream()
-                .filter(listener -> listener.getType() == InventoryCloseEvent.class)
+                .filter(listener -> listener.type() == InventoryCloseEvent.class)
                 .forEach(listener -> ((InventoryListener<InventoryCloseEvent>) listener)
                         .accept(new InventoryCloseEvent(player.getOpenInventory())));
 
