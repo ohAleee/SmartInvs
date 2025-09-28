@@ -34,34 +34,22 @@ import java.util.logging.Level;
 
 public class InventoryManager {
 
-    private JavaPlugin plugin;
-    private PluginManager pluginManager;
+    private final JavaPlugin plugin;
 
-    private Map<UUID, SmartInventory> inventories;
-    private Map<UUID, InventoryContents> contents;
+    private final Map<UUID, SmartInventory> inventories = new HashMap<>();
+    private final Map<UUID, InventoryContents> contents = new HashMap<>();
 
-    private List<InventoryOpener> defaultOpeners;
-    private List<InventoryOpener> openers;
+    private final List<InventoryOpener> defaultOpeners = Arrays.asList(
+            new ChestInventoryOpener(),
+            new SpecialInventoryOpener()
+    );
+    private final List<InventoryOpener> openers = new ArrayList<>();
 
-    public InventoryManager(JavaPlugin plugin) {
+    public InventoryManager(JavaPlugin plugin, int updatePeriod) {
         this.plugin = plugin;
-        this.pluginManager = Bukkit.getPluginManager();
 
-        this.inventories = new HashMap<>();
-        this.contents = new HashMap<>();
-
-        this.defaultOpeners = Arrays.asList(
-                new ChestInventoryOpener(),
-                new SpecialInventoryOpener()
-        );
-
-        this.openers = new ArrayList<>();
-    }
-
-    public void init() {
-        pluginManager.registerEvents(new InvListener(), plugin);
-
-        new InvTask().runTaskTimer(plugin, 1, 1);
+        Bukkit.getPluginManager().registerEvents(new InvListener(), plugin);
+        new InvTask().runTaskTimer(plugin, 1, updatePeriod);
     }
 
     public Optional<InventoryOpener> findOpener(InventoryType type) {
@@ -69,7 +57,7 @@ public class InventoryManager {
                 .filter(opener -> opener.supports(type))
                 .findAny();
 
-        if (!opInv.isPresent()) {
+        if (opInv.isEmpty()) {
             opInv = this.defaultOpeners.stream()
                     .filter(opener -> opener.supports(type))
                     .findAny();
